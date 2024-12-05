@@ -4,15 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CashFlowResource\Pages;
 use App\Models\CashFlow;
-use Faker\Provider\Text;
 use Filament\Forms;
 use Filament\Resources\Resource;
-use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Forms\Components\{DatePicker, FileUpload, Textarea, TextInput};
 use Filament\Tables\Actions\{EditAction, BulkActionGroup, DeleteBulkAction};
 use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
-use Filament\Tables\Columns\{TextColumn, DateColumn};
+use Filament\Tables\Columns\{TextColumn};
+
 
 class CashFlowResource extends Resource
 {
@@ -29,12 +28,14 @@ class CashFlowResource extends Resource
                 TextInput::make('name')
                     ->label('Name')
                     ->required()
+                    ->placeholder("Nama Transaksi")
                     ->columnSpan(2),
 
                 DatePicker::make('transaction_date')
                     ->label('Transaction Date')
                     ->required()
-                    ->columnSpan('full'), // Spans full width on mobile
+                    ->placeholder("Tanggal Transaksi")
+                    ->columnSpan('full'),
 
                 TextInput::make('expenses')
                     ->label('Expenses')
@@ -42,7 +43,8 @@ class CashFlowResource extends Resource
                     ->minValue(0)
                     ->numeric()
                     ->required()
-                    ->columnSpan(1), // Takes half width on larger screens
+                    ->placeholder("Pengeluaran")
+                    ->columnSpan(1),
 
                 TextInput::make('income')
                     ->label('Income')
@@ -50,30 +52,33 @@ class CashFlowResource extends Resource
                     ->minValue(0)
                     ->numeric()
                     ->required()
-                    ->columnSpan(1), // Takes half width on larger screens
+                    ->placeholder("Pemasukan")
+                    ->columnSpan(1),
 
-                    Textarea::make('notes')
-                        ->label('Notes')
-                        ->maxLength(255)
-                        ->rows(10)
-                        ->cols(20)
-                        ->columnSpan('full'), // Spans full width on mobile
+                Textarea::make('notes')
+                    ->label('Notes')
+                    ->maxLength(255)
+                    ->rows(10)
+                    ->cols(20)
+                    ->required()
+                    ->placeholder("Pembelian Kertas")
+                    ->columnSpan('full'),
 
                 FileUpload::make('attachment')
                     ->label('Attachment')
                     ->acceptedFileTypes(['application/pdf'])
                     ->maxSize(1024)
                     ->required()
-                    ->columnSpan('full'), // Spans full width on mobile
+                    ->columnSpan('full'),
 
                 PdfViewerField::make('attachment')
                     ->label('View the PDF')
                     ->minHeight('100svh')
-                    ->columnSpan('full'), // Spans full width on mobile
+                    ->columnSpan('full'),
             ])
             ->columns([
-                'sm' => 1, // Single column layout on small screens
-                'lg' => 2, // Two-column layout on larger screens
+                'sm' => 1,
+                'lg' => 2,
             ]);
     }
 
@@ -87,7 +92,7 @@ class CashFlowResource extends Resource
                     ->label('Name')
                     ->limit(50),
                 TextColumn::make('transaction_date')
-                    ->label('Date')
+                    ->label('Transaction Date')
                     ->sortable(),
                 TextColumn::make('expenses')
                     ->label('Expenses')
@@ -104,6 +109,10 @@ class CashFlowResource extends Resource
                 TextColumn::make('notes')
                     ->label('Notes')
                     ->limit(50),
+                TextColumn::make('created_at')
+                    ->label('Created At'),
+                TextColumn::make('updated_at')
+                    ->label('Updated At')
         ])
             ->defaultSort('created_at', 'desc')
             ->actions([

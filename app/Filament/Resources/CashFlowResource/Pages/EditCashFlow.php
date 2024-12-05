@@ -27,13 +27,16 @@ class EditCashFlow extends EditRecord
             // Get the old data before the update
             $oldData = CashFlow::find($this->record->id); // Fetch the old record from the database
 
+            // Get the changes made to the record
+            $changedData = $this->record->getChanges(); // Get the changes that were actually made
+
             Logging::create([
                 'user_id' => $user->id,
                 'user_name' => $user->name ?? 'Unknown',
                 'resource' => 'cash_flow',
                 'action' => $this->record->wasChanged() ? 'update' : 'create',
                 'old_data' => $oldData->toArray(),
-                'new_data' =>$this->record->toArray()
+                'new_data' => $changedData
             ]);
         }
     }

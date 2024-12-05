@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LoggingResource\Pages;
 
 use App\Filament\Resources\LoggingResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditLogging extends EditRecord
@@ -12,8 +13,11 @@ class EditLogging extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return [];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
     }
 }

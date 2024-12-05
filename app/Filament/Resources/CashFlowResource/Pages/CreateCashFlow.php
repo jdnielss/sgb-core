@@ -38,4 +38,8 @@ class CreateCashFlow extends CreateRecord
         }
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
