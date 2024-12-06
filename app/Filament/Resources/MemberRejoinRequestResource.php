@@ -23,8 +23,8 @@ class MemberRejoinRequestResource extends Resource
     protected static ?string $model = MemberRejoinRequest::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path';
-    protected static ?string $navigationLabel = 'Rejoin Request';
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationLabel = 'Rejoin';
+    protected static ?string $navigationGroup = 'Request';
     protected static ?string $slug = 'member-rejoin-request';
 
     public static function form(Form $form): Form
