@@ -5,19 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LoggingResource\Pages;
 use App\Filament\Resources\LoggingResource\RelationManagers;
 use App\Models\Logging;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\View;
 
 class LoggingResource extends Resource
 {
@@ -54,22 +50,27 @@ class LoggingResource extends Resource
                     ->label('Update At')
                     ->columnSpan(1)
                     ->disabled(),
-                Section::make("Changes")->schema([
-                    Textarea::make('old_data')
-                        ->label('Old Data')
-                        ->rows(10)
-                        ->cols(50)
-                        ->columnSpan(1)
-                        ->afterStateHydrated(fn (TextArea $component, $state) => $component->state(json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)))
-                        ->disabled(),
-                    Textarea::make('new_data')
-                        ->label('New Data')
-                        ->rows(10)
-                        ->cols(20)
-                        ->columnSpan(1)
-                        ->disabled()
-                        ->afterStateHydrated(fn (TextArea $component, $state) => $component->state(json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)))
-                ])->compact(),
+                Section::make("Changes")
+                    ->schema([
+                        Textarea::make('old_data')
+                            ->label('Old Data')
+                            ->rows(10)
+                            ->cols(50)
+                            ->columnSpan(1)
+                            ->afterStateHydrated(function (Textarea $component, $state) {
+                                $component->state(json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                            })
+                            ->disabled(),
+                        Textarea::make('new_data')
+                            ->label('New Data')
+                            ->rows(10)
+                            ->cols(50)
+                            ->columnSpan(1)
+                            ->disabled()
+                            ->afterStateHydrated(function (Textarea $component, $state) {
+                                $component->state(json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                            }),
+                    ])->compact(),
             ]);
     }
 
@@ -86,11 +87,11 @@ class LoggingResource extends Resource
                 TextColumn::make('resource')
                     ->label('Resource')
                     ->sortable(),
+                TextColumn::make('action')
+                    ->label('Action')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Created At')
-                    ->sortable(),
-                TextColumn::make('updated_at')
-                    ->label('Updated At')
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
