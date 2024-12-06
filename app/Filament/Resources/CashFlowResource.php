@@ -8,8 +8,6 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Forms\Components\{DatePicker, FileUpload, Textarea, TextInput};
-use Filament\Tables\Actions\{EditAction, BulkActionGroup, DeleteBulkAction};
-use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 use Filament\Tables\Columns\{TextColumn};
 
 
@@ -55,6 +53,15 @@ class CashFlowResource extends Resource
                     ->placeholder("Pemasukan")
                     ->columnSpan(1),
 
+                TextInput::make('balance')
+                    ->label('Balance')
+                    ->prefix("Rp. ")
+                    ->minValue(0)
+                    ->numeric()
+                    ->required()
+                    ->placeholder("Sisa Saldo")
+                    ->columnSpan(1),
+
                 Textarea::make('notes')
                     ->label('Notes')
                     ->maxLength(255)
@@ -66,14 +73,11 @@ class CashFlowResource extends Resource
 
                 FileUpload::make('attachment')
                     ->label('Attachment')
-                    ->acceptedFileTypes(['application/pdf'])
+                    ->acceptedFileTypes(['application/pdf', 'image/*'])
                     ->maxSize(1024)
+                    ->openable()
+                    ->downloadable()
                     ->required()
-                    ->columnSpan('full'),
-
-                PdfViewerField::make('attachment')
-                    ->label('View the PDF')
-                    ->minHeight('100svh')
                     ->columnSpan('full'),
             ])
             ->columns([

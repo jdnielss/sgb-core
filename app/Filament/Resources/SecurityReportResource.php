@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SecurityReportResource\Pages;
 use App\Filament\Resources\SecurityReportResource\RelationManagers;
 use App\Models\SecurityReport;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -17,8 +16,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class SecurityReportResource extends Resource
@@ -58,6 +55,7 @@ class SecurityReportResource extends Resource
                         ]),
                     FileUpload::make('attachment')
                         ->acceptedFileTypes(['image/*'])
+                        ->downloadable()
                         ->maxSize(1024)
                         ->required()
                     ->columnSpan('full')
