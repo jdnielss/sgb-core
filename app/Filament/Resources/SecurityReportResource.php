@@ -26,7 +26,7 @@ class SecurityReportResource extends Resource
     protected static ?string $model = SecurityReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-    protected static ?string $navigationLabel = 'Security Report';
+    protected static ?string $navigationLabel = 'Report';
     protected static ?string $navigationGroup = 'Admin';
     protected static ?string $slug = 'security-report';
 

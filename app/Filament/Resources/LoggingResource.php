@@ -81,6 +81,9 @@ class LoggingResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('index')
+                    ->label('No. ')
+                    ->rowIndex(),
                 TextColumn::make('user_name')
                     ->label('PIC')
                 ->searchable(),

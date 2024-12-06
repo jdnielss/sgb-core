@@ -88,12 +88,12 @@ class CashFlowResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('index')
+                    ->label('No. ')
+                    ->rowIndex(),
                 TextColumn::make('name')
                     ->label('Name')
                     ->limit(50),
-                TextColumn::make('transaction_date')
-                    ->label('Transaction Date')
-                    ->sortable(),
                 TextColumn::make('expenses')
                     ->label('Expenses')
                     ->sortable()
@@ -108,11 +108,14 @@ class CashFlowResource extends Resource
                     ->formatStateUsing(fn (string|int|null $state): string => 'Rp ' . number_format((int) $state, 0, ',', '.')),
                 TextColumn::make('notes')
                     ->label('Notes')
-                    ->limit(50),
+                    ->limit(20),
+                TextColumn::make('transaction_date')
+                    ->label('Transaction Date')
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Created At'),
+                    ->label('Created Date'),
                 TextColumn::make('updated_at')
-                    ->label('Updated At')
+                    ->label('Updated Date')
         ])
             ->defaultSort('created_at', 'desc')
             ->actions([
