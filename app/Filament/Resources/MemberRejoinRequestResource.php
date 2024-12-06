@@ -207,6 +207,7 @@ class MemberRejoinRequestResource extends Resource
                     ->badge()
 
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([])
             ->actions([]);
     }
