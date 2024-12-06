@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\View;
+use Illuminate\Support\Str;
 
 class LoggingResource extends Resource
 {
@@ -89,6 +90,12 @@ class LoggingResource extends Resource
                     ->sortable(),
                 TextColumn::make('action')
                     ->label('Action')
+                    ->formatStateUsing(fn (string $state) => Str::title($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        'create' => 'success',
+                        'update' => 'info',
+                    })
+                    ->badge()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Created At')
