@@ -96,6 +96,7 @@ class MemberRejoinRequestResource extends Resource
                 ]),
                 Section::make("Attachment")->schema([
                     Placeholder::make('ktp')
+                        ->label("KTP")
                         ->content(function ($record): HtmlString {
                             if ($record && $record->ktp) {
                                 return new HtmlString("<img src='" . $record->ktp . "' style='width: 100%;'>");
@@ -105,6 +106,7 @@ class MemberRejoinRequestResource extends Resource
                         }),
 
                     Placeholder::make('file')
+                        ->label("Membership Documents")
                         ->content(function ($record): HtmlString {
                             if ($record && $record->file) {
                                 return new HtmlString("<img src='" . $record->file . "' style='width: 100%;'>");
