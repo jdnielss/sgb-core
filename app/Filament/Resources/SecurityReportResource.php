@@ -23,7 +23,7 @@ class SecurityReportResource extends Resource
     protected static ?string $model = SecurityReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-    protected static ?string $navigationLabel = 'Report';
+    protected static ?string $navigationLabel = 'Security Report';
     protected static ?string $navigationGroup = 'Admin';
     protected static ?string $slug = 'security-report';
 
@@ -37,6 +37,8 @@ class SecurityReportResource extends Resource
                         ->required(),
                     TextInput::make('facebook_link')
                         ->label('Facebook Link')
+                        ->url()
+                        ->placeholder("https://facebook.com")
                         ->required(),
                     TextInput::make('executed_by')
                         ->label('Executor')
@@ -74,6 +76,10 @@ class SecurityReportResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                'action_type',
+            ])
+            ->defaultGroup('action_type')
             ->columns([
                 TextColumn::make('index')
                     ->label('No. ')
@@ -81,21 +87,25 @@ class SecurityReportResource extends Resource
                 TextColumn::make('affected_user_name')
                     ->label('Affected User')
                     ->searchable(),
-                TextColumn::make('facebook_link')
-                    ->label('Facebook')
-                    ->searchable()
-                    ->copyable(),
                 TextColumn::make('executed_by')
                     ->label('Executed By'),
                 TextColumn::make('executed_at')
                     ->label('Executed Date')
                     ->sortable(),
+                TextColumn::make('facebook_link')
+                    ->label('Facebook')
+                    ->searchable()
+                    ->copyable()
+                    ->formatStateUsing(fn (?string $state): string => $state ? "<a href='$state' target='_blank'>View Profile</a>" : 'No Profile')
+                    ->html()
+                    ->badge()
+                    ->tooltip(fn ($state) => $state),
                 TextColumn::make('action_type')
                     ->label('Action Type')
                     ->formatStateUsing(fn (string $state) => Str::title($state))
                     ->color(fn (string $state): string => match ($state) {
                         'rejoin' => 'success',
-                        'muted' => 'gray',
+                        'muted' => 'warning',
                         'banned' => 'danger',
                         default => 'info',
                     })

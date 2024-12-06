@@ -159,6 +159,11 @@ class MemberRejoinRequestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                'status',
+                'joined_gathering',
+            ])
+            ->defaultGroup('status')
             ->columns([
                 TextColumn::make('index')
                     ->label('No. ')
