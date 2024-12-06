@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LoggingResource\Pages;
 use App\Filament\Resources\LoggingResource\RelationManagers;
 use App\Models\Logging;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -13,7 +13,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Forms\Components\View;
 use Illuminate\Support\Str;
 
 class LoggingResource extends Resource
@@ -28,29 +27,32 @@ class LoggingResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('user_name')
-                    ->label('Pic')
-                    ->required()
-                    ->columnSpan(1)
-                    ->disabled(),
-                TextInput::make('resource')
-                    ->label('Name')
-                    ->required()
-                    ->columnSpan(1)
-                    ->disabled(),
-                TextInput::make('action')
-                    ->label('Action')
-                    ->required()
-                    ->columnSpan(2)
-                    ->disabled(),
-                DatePicker::make('created_at')
-                    ->label('Created At')
-                    ->columnSpan(1)
-                    ->disabled(),
-                DatePicker::make('updated_at')
-                    ->label('Update At')
-                    ->columnSpan(1)
-                    ->disabled(),
+                Section::make("Data")->schema([
+                    TextInput::make('user_name')
+                        ->label('Pic')
+                        ->required()
+                        ->columnSpan(1)
+                        ->disabled(),
+                    TextInput::make('resource')
+                        ->label('Name')
+                        ->required()
+                        ->columnSpan(1)
+                        ->disabled(),
+                    TextInput::make('action')
+                        ->label('Action')
+                        ->formatStateUsing(fn (string $state) => Str::title($state))
+                        ->required()
+                        ->columnSpan(2)
+                        ->disabled(),
+                    DateTimePicker::make('created_at')
+                        ->label('Created Date')
+                        ->columnSpan(1)
+                        ->disabled(),
+                    DateTimePicker::make('updated_at')
+                        ->label('Update Date')
+                        ->columnSpan(1)
+                        ->disabled(),
+                ])->columns(2),
                 Section::make("Changes")
                     ->schema([
                         Textarea::make('old_data')
@@ -74,9 +76,6 @@ class LoggingResource extends Resource
                     ])->compact(),
             ]);
     }
-
-
-
 
     public static function table(Table $table): Table
     {
